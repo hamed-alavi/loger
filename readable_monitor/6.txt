@@ -1,0 +1,11 @@
+OP: 78 
+node: 5  
+Multiplex: 2  
+vehicle: 5  
+version dump: 10 
+Status: 7  
+Step: 1  
+Version: 2.07.00 ÿÿÿÿÿÿ
+//----------
+Diag: 0x742, 0x02, 0x10, 0xB0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+
