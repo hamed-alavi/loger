@@ -6,11 +6,12 @@
 # file.close()
 
 import os
-from Crypto.Cipher import AES
+
 # from Crypto.Util.Padding import unpad
 import multiprocessing as mp
 # import pip._vendor.requests
 # import json
+from Crypto.Cipher import AES
 
 
 def decryptor(encrypt_file_address, decrypt_file_address, key):
@@ -100,7 +101,10 @@ def text_maker(input_bin_address, output_txt_address):
                 str_final = str_final + " "
 
         str_final = str_final + "\n"
-        txt_file.write(str_final)
+        try:
+            txt_file.write(str_final)
+        except:
+            txt_file.write(str_final[:16] + "\n")
 
     txt_file.write("//----------\n")
     # end ecu_info
@@ -112,6 +116,8 @@ def text_maker(input_bin_address, output_txt_address):
     id_reci_can = [0x07, 0xE8, 0x07, 0xEF, 0x07, 0xAD, 0x06, 0x41, 0x07, 0x61, 0x06, 0x50, 0x07, 0x58, 0x07, 0xA0, 0x07, 0x00, 0x07, 0x40, 0x07, 0x28, 0x07, 0xA3, 0x07, 0x65, 0x07, 0x6C, 0x07, 0x04, 0x07, 0x60, 0x07, 0x50, 0x07,
                    0x6D, 0x07, 0x5D, 0x07, 0x6A, 0x07, 0xB2, 0x07, 0x08, 0x07, 0x5E, 0x07, 0x39, 0x07, 0x70, 0x06, 0x52, 0x07, 0x5A, 0x07, 0x81, 0x07, 0xB0, 0x06, 0x48, 0x07, 0x21, 0x06, 0x5F, 0x06, 0x42, 0x06, 0x44, 0x06, 0x50, 0x07, 0x24, 0x07, 0x02]
     global_can_id = 0
+    protocol_is_can = True
+    protocol_is_can_help = False
     for i in range(int(len(id_send_can)/2)):
         if ((total_manitor_size > 10) and ecu_monitor_buffer_list[0] == id_send_can[(0 + (2*i))] and ecu_monitor_buffer_list[1] == id_send_can[(1 + (2*i))] and ecu_monitor_buffer_list[10] == id_reci_can[(0 + (2*i))] and ecu_monitor_buffer_list[11] == id_reci_can[(1 + (2*i))]):
             protocol_is_can = True  # is can protocol
@@ -182,8 +188,11 @@ def text_maker(input_bin_address, output_txt_address):
                 diag_or_node_detection = ecu_monitor_buffer_list[global_address + 2]
                 frame_size_help = ecu_monitor_buffer_list[global_address + 3] + 3 + 1 + 1
             elif frame_size_help < 0x80:
-                frame_size_help = frame_size_help + 1 + 1
-                diag_or_node_detection = 0
+                # frame_size_help = frame_size_help + 1 + 1
+                # diag_or_node_detection = 0
+                line_string = line_string + "can or unknown protocol found! done"
+                txt_file.write(line_string)
+                break
 
             for i in range(len(diag_address)):
                 if diag_or_node_detection == diag_address[i]:
