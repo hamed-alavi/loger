@@ -11,7 +11,7 @@ import os
 import multiprocessing as mp
 # import pip._vendor.requests
 # import json
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES # type: ignore
 
 
 def decryptor(encrypt_file_address, decrypt_file_address, key):
@@ -29,6 +29,17 @@ def decryptor(encrypt_file_address, decrypt_file_address, key):
                 elif len(chunk) % 16 != 0:
                     chunk += b' '*(16-(len(chunk) % 16))
                 outfile.write(encryptor.decrypt(chunk))
+
+
+def delete_files_in_directory(decrypted_file_directory, txt_file_directory):
+    print("removing files please wait...")
+    for filename1 in os.listdir(decrypted_file_directory):
+        input_file = os.path.join(decrypted_file_directory, filename1)
+        os.remove(input_file)
+
+    for filename2 in os.listdir(txt_file_directory):
+        input_file = os.path.join(txt_file_directory, filename2)
+        os.remove(input_file)
 
 
 def decrypt_files_in_directory(encrypted_file_directory, decrypted_file_directory, key):
@@ -245,6 +256,7 @@ def make_text_file_from_decrypted_files(decrypted_file_directory, text_file_dire
 
 key = bytes.fromhex('34404A643889227367365E3F4F4B4C74')
 print(key)
+delete_files_in_directory('./decrypted/', './readable_monitor/')
 decrypt_files_in_directory('./files/', './decrypted/', key)
 # ----------------------------------
 make_text_file_from_decrypted_files('./decrypted/', './readable_monitor/')

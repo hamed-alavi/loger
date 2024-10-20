@@ -1,0 +1,15 @@
+OP: 13  
+EcuName: 2.  Siemens
+dump_index: 522.Pars Petrol CGE XU7P GSLMUXCIM E5 NF
+Status: 0   
+Step: 1   
+Percent: 0   
+Version: 2.06.00
+//----------
+Diag: 0x81, 0x11, 0xF1, 0x81, 0x04
+
+Node: 0x81, 0x81, 0x11, 0xF1, 0x82
+
+Node: 0x81, 0x81, 0x11, 0xF1, 0x82
+
+can or unknown protocol found! done
